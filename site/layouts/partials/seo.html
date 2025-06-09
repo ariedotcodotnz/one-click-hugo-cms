@@ -1,0 +1,46 @@
+<meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if .Summary }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="author" content="{{ .Site.Params.author }}">
+
+<!-- Open Graph -->
+{{ if .Site.Params.seo.enableOpenGraph }}
+<meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ if .Description }}{{ .Description }}{{ else if .Summary }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+{{ if .Params.featured_image }}
+<meta property="og:image" content="{{ .Params.featured_image | absURL }}">
+{{ end }}
+<meta property="og:site_name" content="{{ .Site.Title }}">
+{{ end }}
+
+<!-- Twitter Cards -->
+{{ if .Site.Params.seo.enableTwitterCards }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="{{ .Site.Params.seo.twitterUsername }}">
+<meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+<meta name="twitter:description" content="{{ if .Description }}{{ .Description }}{{ else if .Summary }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+{{ if .Params.featured_image }}
+<meta name="twitter:image" content="{{ .Params.featured_image | absURL }}">
+{{ end }}
+{{ end }}
+
+<!-- Canonical URL -->
+<link rel="canonical" href="{{ if .Params.seo.canonical_url }}{{ .Params.seo.canonical_url }}{{ else }}{{ .Permalink }}{{ end }}">
+
+<!-- Schema.org structured data -->
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "{{ if eq .Type "items" }}CreativeWork{{ else if eq .Type "collections" }}Collection{{ else }}WebPage{{ end }}",
+        "name": "{{ .Title }}",
+        "description": "{{ if .Description }}{{ .Description }}{{ else if .Summary }}{{ .Summary }}{{ end }}",
+        "url": "{{ .Permalink }}",
+    {{ if .Params.featured_image }}"image": "{{ .Params.featured_image | absURL }}",{{ end }}
+    {{ if .Params.metadata.creator }}"creator": {{ .Params.metadata.creator | jsonify }},{{ end }}
+    {{ if .Params.metadata.date }}"dateCreated": "{{ .Params.metadata.date }}",{{ end }}
+    "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}"
+    }
+    }
+</script>

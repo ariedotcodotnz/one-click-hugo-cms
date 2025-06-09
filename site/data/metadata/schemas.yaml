@@ -1,0 +1,182 @@
+# data/metadata/schemas.yaml
+dublin_core:
+  name: "Dublin Core"
+  fields:
+    - name: "title"
+      label: "Title"
+      type: "string"
+      required: true
+      repeatable: false
+      description: "A name given to the resource"
+
+    - name: "creator"
+      label: "Creator"
+      type: "string"
+      required: false
+      repeatable: true
+      description: "An entity primarily responsible for making the resource"
+
+    - name: "subject"
+      label: "Subject"
+      type: "string"
+      required: false
+      repeatable: true
+      description: "The topic of the resource"
+
+    - name: "description"
+      label: "Description"
+      type: "text"
+      required: false
+      repeatable: false
+      description: "An account of the resource"
+
+    - name: "publisher"
+      label: "Publisher"
+      type: "string"
+      required: false
+      repeatable: false
+      description: "An entity responsible for making the resource available"
+
+    - name: "contributor"
+      label: "Contributor"
+      type: "string"
+      required: false
+      repeatable: true
+      description: "An entity responsible for making contributions to the resource"
+
+    - name: "date"
+      label: "Date"
+      type: "date"
+      required: false
+      repeatable: false
+      description: "A point or period of time associated with an event in the lifecycle of the resource"
+
+    - name: "type"
+      label: "Type"
+      type: "select"
+      required: false
+      repeatable: false
+      options:
+        - "Collection"
+        - "Dataset"
+        - "Event"
+        - "Image"
+        - "InteractiveResource"
+        - "MovingImage"
+        - "PhysicalObject"
+        - "Service"
+        - "Software"
+        - "Sound"
+        - "StillImage"
+        - "Text"
+      description: "The nature or genre of the resource"
+
+    - name: "format"
+      label: "Format"
+      type: "string"
+      required: false
+      repeatable: false
+      description: "The file format, physical medium, or dimensions of the resource"
+
+    - name: "identifier"
+      label: "Identifier"
+      type: "string"
+      required: false
+      repeatable: false
+      description: "An unambiguous reference to the resource within a given context"
+
+    - name: "source"
+      label: "Source"
+      type: "string"
+      required: false
+      repeatable: false
+      description: "A related resource from which the described resource is derived"
+
+    - name: "language"
+      label: "Language"
+      type: "select"
+      required: false
+      repeatable: false
+      options:
+        - value: "en"
+          label: "English"
+        - value: "es"
+          label: "Spanish"
+        - value: "fr"
+          label: "French"
+        - value: "de"
+          label: "German"
+        - value: "it"
+          label: "Italian"
+        - value: "pt"
+          label: "Portuguese"
+        - value: "zh"
+          label: "Chinese"
+        - value: "ja"
+          label: "Japanese"
+        - value: "ar"
+          label: "Arabic"
+      description: "A language of the resource"
+
+    - name: "relation"
+      label: "Relation"
+      type: "string"
+      required: false
+      repeatable: true
+      description: "A related resource"
+
+    - name: "coverage"
+      label: "Coverage"
+      type: "string"
+      required: false
+      repeatable: false
+      description: "The spatial or temporal topic of the resource"
+
+    - name: "rights"
+      label: "Rights"
+      type: "text"
+      required: false
+      repeatable: false
+      description: "Information about rights held in and over the resource"
+
+custom_fields:
+  - name: "provenance"
+    label: "Provenance"
+    type: "text"
+    required: false
+    description: "The history of ownership or custody of the item"
+
+  - name: "condition"
+    label: "Condition"
+    type: "select"
+    required: false
+    options:
+      - "Excellent"
+      - "Good"
+      - "Fair"
+      - "Poor"
+    description: "The physical condition of the item"
+
+  - name: "dimensions"
+    label: "Dimensions"
+    type: "object"
+    fields:
+      - name: "width"
+        type: "number"
+        unit: "pixels"
+      - name: "height"
+        type: "number"
+        unit: "pixels"
+      - name: "duration"
+        type: "string"
+        format: "HH:MM:SS"
+
+  - name: "location"
+    label: "Geographic Location"
+    type: "object"
+    fields:
+      - name: "place"
+        type: "string"
+      - name: "coordinates"
+        type: "string"
+        format: "lat,lng"
