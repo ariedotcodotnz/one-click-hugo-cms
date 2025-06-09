@@ -1,0 +1,68 @@
+# data/facets/categories.yaml
+item_types:
+  - value: "image"
+    label: "Images"
+    icon: "📷"
+    description: "Photographs, illustrations, and other visual materials"
+
+  - value: "document"
+    label: "Documents"
+    icon: "📄"
+    description: "Text documents, manuscripts, and PDFs"
+
+  - value: "audio"
+    label: "Audio"
+    icon: "🎵"
+    description: "Sound recordings, music, and oral histories"
+
+  - value: "video"
+    label: "Video"
+    icon: "🎬"
+    description: "Moving images and film"
+
+  - value: "3d"
+    label: "3D Objects"
+    icon: "🎲"
+    description: "Three-dimensional models and objects"
+
+access_levels:
+  - value: "public"
+    label: "Public Access"
+    description: "Available to all users"
+
+  - value: "restricted"
+    label: "Restricted Access"
+    description: "Requires authentication"
+
+  - value: "private"
+    label: "Private"
+    description: "Internal use only"
+
+rights_statements:
+  - value: "cc0"
+    label: "CC0 - Public Domain"
+    url: "https://creativecommons.org/publicdomain/zero/1.0/"
+
+  - value: "cc-by"
+    label: "CC BY - Attribution"
+    url: "https://creativecommons.org/licenses/by/4.0/"
+
+  - value: "cc-by-sa"
+    label: "CC BY-SA - Attribution-ShareAlike"
+    url: "https://creativecommons.org/licenses/by-sa/4.0/"
+
+  - value: "cc-by-nc"
+    label: "CC BY-NC - Attribution-NonCommercial"
+    url: "https://creativecommons.org/licenses/by-nc/4.0/"
+
+  - value: "cc-by-nc-sa"
+    label: "CC BY-NC-SA - Attribution-NonCommercial-ShareAlike"
+    url: "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+
+  - value: "in-copyright"
+    label: "In Copyright"
+    description: "Protected by copyright"
+
+  - value: "unknown"
+    label: "Copyright Unknown"
+    description: "Copyright status is unknown"

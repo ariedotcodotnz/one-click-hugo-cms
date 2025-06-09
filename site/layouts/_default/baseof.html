@@ -1,17 +1,30 @@
-<!doctype html>
-<html lang="{{ $.Site.Language.Lang }}">
-  {{ partial "head" . }}
-  <body class="sans-serif">
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body class="flex flex-col min-h-screen">
+{{ partial "header.html" . }}
 
-    {{ block "header" . }}{{ partial "nav" . }}{{end}}
+<main class="flex-grow">
+  {{ block "main" . }}{{ end }}
+</main>
 
-    {{ block "main" . }}{{ end }}
+{{ partial "footer.html" . }}
 
-    {{ block "footer" . }}{{ partial "footer" . }}{{end}}
+<!-- Search index for Lunr.js -->
+<script>
+  window.searchIndex = {{ .Site.Data.search | jsonify }};
+</script>
 
-    {{ $script := .Site.Data.webpack.main }}
-    {{ with $script.js }}
-      <script src="{{ relURL . }}"></script>
-    {{ end }}
-  </body>
+<!-- Main JavaScript -->
+{{ $js := resources.Get "js/search.js" | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" defer></script>
+
+{{ $viewer := resources.Get "js/viewer.js" | minify | fingerprint }}
+<script src="{{ $viewer.RelPermalink }}" defer></script>
+
+{{ $facets := resources.Get "js/facets.js" | minify | fingerprint }}
+<script src="{{ $facets.RelPermalink }}" defer></script>
+</body>
 </html>

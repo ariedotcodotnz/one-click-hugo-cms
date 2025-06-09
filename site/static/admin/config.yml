@@ -2,105 +2,136 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "site/static/img" # Folder where user uploaded files should go
-public_folder: "img"
+media_folder: "static/uploads"
+public_folder: "/uploads"
 
-collections: # A list of collections the CMS should be able to edit
-  - name: "post" # Used in routes, ie.: /admin/collections/:slug/edit
-    label: "Post" # Used in the UI, ie.: "New Post"
-    folder: "site/content/post" # The path to the folder where the documents are stored
-    path: "{{slug}}/index" # Each document is inside a folder with the slug name.
-    create: true # Allow users to create new documents in this collection
-    fields: # The fields each document in this collection have
+collections:
+  - name: "collections"
+    label: "Collections"
+    folder: "content/collections"
+    create: true
+    slug: "{{slug}}"
+    fields:
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Publish Date", name: "date", widget: "datetime"}
-      - {label: "Intro Blurb", name: "description", widget: "text"}
-      - {label: "Image", name: "image", widget: "image", required: false}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Featured Image", name: "featured_image", widget: "image", required: false}
+      - {label: "Collection Type", name: "collection_type", widget: "select", options: ["physical", "digital", "mixed"]}
+      - {label: "Access Level", name: "access_level", widget: "select", options: ["public", "restricted", "private"]}
+      - {label: "Metadata Schema", name: "metadata_schema", widget: "select", options: ["dublin_core", "custom"]}
+      - {label: "Subjects", name: "subjects", widget: "list"}
+      - {label: "Creators", name: "creators", widget: "list"}
+      - {label: "Contributors", name: "contributors", widget: "list", required: false}
+      - label: "Coverage"
+        name: "coverage"
+        widget: "object"
+        fields:
+          - {label: "Temporal", name: "temporal", widget: "string", required: false}
+          - {label: "Spatial", name: "spatial", widget: "string", required: false}
+      - {label: "Rights", name: "rights", widget: "select", options: ["Creative Commons Attribution 4.0", "Public Domain", "In Copyright", "Unknown"]}
+      - {label: "Related Collections", name: "related_collections", widget: "relation", collection: "collections", searchFields: ["title"], valueField: "{{slug}}", displayFields: ["title"], multiple: true, required: false}
       - {label: "Body", name: "body", widget: "markdown"}
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        fields:
+          - {label: "Meta Description", name: "meta_description", widget: "text", required: false}
+          - {label: "Keywords", name: "keywords", widget: "list", required: false}
+          - {label: "Canonical URL", name: "canonical_url", widget: "string", required: false}
+
+  - name: "items"
+    label: "Items"
+    folder: "content/items"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Date", name: "date", widget: "datetime"}
+      - {label: "Identifier", name: "identifier", widget: "string"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Collection", name: "collection", widget: "relation", collection: "collections", searchFields: ["title"], valueField: "{{slug}}", displayFields: ["title"]}
+      - {label: "Item Type", name: "item_type", widget: "select", options: ["image", "document", "audio", "video", "3d"]}
+      - {label: "Format", name: "format", widget: "string"}
+      - {label: "Featured Image", name: "featured_image", widget: "image", required: false}
+      - label: "Access Files"
+        name: "access_files"
+        widget: "object"
+        fields:
+          - {label: "Thumbnail", name: "thumbnail", widget: "image", required: false}
+          - {label: "Medium", name: "medium", widget: "file", required: false}
+          - {label: "Large", name: "large", widget: "file", required: false}
+          - {label: "Original", name: "original", widget: "file", required: false}
+      - label: "Metadata"
+        name: "metadata"
+        widget: "object"
+        fields:
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Creator", name: "creator", widget: "list"}
+          - {label: "Subject", name: "subject", widget: "list"}
+          - {label: "Description", name: "description", widget: "text"}
+          - {label: "Publisher", name: "publisher", widget: "string", required: false}
+          - {label: "Contributor", name: "contributor", widget: "list", required: false}
+          - {label: "Date", name: "date", widget: "string", required: false}
+          - {label: "Type", name: "type", widget: "string", required: false}
+          - {label: "Format", name: "format", widget: "string", required: false}
+          - {label: "Identifier", name: "identifier", widget: "string", required: false}
+          - {label: "Source", name: "source", widget: "string", required: false}
+          - {label: "Language", name: "language", widget: "select", options: ["en", "es", "fr", "de", "it", "pt", "zh", "ja", "ar"], default: "en"}
+          - {label: "Relation", name: "relation", widget: "list", required: false}
+          - {label: "Coverage", name: "coverage", widget: "string", required: false}
+          - {label: "Rights", name: "rights", widget: "string", required: false}
+          - label: "Dimensions"
+            name: "dimensions"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Width", name: "width", widget: "number", required: false}
+              - {label: "Height", name: "height", widget: "number", required: false}
+              - {label: "Duration", name: "duration", widget: "string", required: false}
+          - label: "Location"
+            name: "location"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Place", name: "place", widget: "string", required: false}
+              - {label: "Coordinates", name: "coordinates", widget: "string", required: false}
+          - {label: "Provenance", name: "provenance", widget: "text", required: false}
+          - {label: "Condition", name: "condition", widget: "select", options: ["Excellent", "Good", "Fair", "Poor"], required: false}
+          - {label: "Transcription", name: "transcription", widget: "markdown", required: false}
+      - label: "Technical Metadata"
+        name: "technical_metadata"
+        widget: "object"
+        required: false
+        fields:
+          - {label: "File Size", name: "file_size", widget: "string", required: false}
+          - {label: "MIME Type", name: "mime_type", widget: "string", required: false}
+          - {label: "Checksum", name: "checksum", widget: "string", required: false}
+          - {label: "Color Space", name: "color_space", widget: "string", required: false}
+          - {label: "Resolution", name: "resolution", widget: "string", required: false}
+      - {label: "Related Items", name: "related_items", widget: "relation", collection: "items", searchFields: ["title"], valueField: "{{slug}}", displayFields: ["title"], multiple: true, required: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
   - name: "pages"
     label: "Pages"
     files:
-      - file: "site/content/_index.md"
-        label: "Home Page"
-        name: "home"
+      - file: "content/about/index.md"
+        label: "About"
+        name: "about"
         fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Subtitle, name: subtitle, widget: string}
-          - {label: Image, name: image, widget: image}
-          - {label: "Blurb", name: blurb, widget: object, fields: [
-              {label: "Heading", name: "heading", widget: string},
-              {label: "Text", name: "text", widget: "text"}]}
-          - {label: "Intro", name: intro, widget: object, fields: [
-              {label: "Heading", name: "heading", widget: string},
-              {label: "Text", name: "text", widget: "text"}]}
-          - {label: "Products", name: products, widget: list, fields: [
-              {label: "Image", name: "image", widget: "image"},
-              {label: "Text", name: "text", widget: "text"}]}
-          - {label: "Values", name: "values", widget: "object", fields: [
-              {label: "Heading", name: "heading", widget: string},
-              {label: "Text", name: "text", widget: "text"}]}
-      - file: "site/content/contact/_index.md"
-        label: "Contact Page"
-        name: "contact"
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
+
+      - file: "content/privacy/index.md"
+        label: "Privacy Policy"
+        name: "privacy"
         fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Logo, name: logo, widget: image}
-          - {label: Body, name: body, widget: markdown}
-          - label: Contact Entries
-            name: contact_entries
-            widget: list
-            fields:
-              - label: Heading
-                name: heading
-                widget: string
-              - label: Text
-                name: text
-                widget: text
-      - file: "site/content/products/_index.md"
-        label: "Products Page"
-        name: "products"
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
+
+      - file: "content/terms/index.md"
+        label: "Terms of Use"
+        name: "terms"
         fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Image, name: image, widget: image}
-          - {label: Intro, name: intro, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Blurbs, name: blurbs, widget: list, fields: [{label: Image, name: image, widget: image}, {label: Text, name: text, widget: text}]}]}
-          - {label: Main, name: main, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: text}, {label: Image1, name: image1, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}, {label: Image2, name: image2, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}, {label: Image3, name: image3, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Alt, name: alt, widget: string}]}]}
-          - {label: Testimonials, name: testimonials, widget: list, fields: [{label: Quote, name: quote, widget: string}, {label: Author, name: author, widget: string}]}
-          - {label: Full_image, name: full_image, widget: image}
-          - {label: Pricing, name: pricing, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: string}, {label: Plans, name: plans, widget: list, fields: [{label: Plan, name: plan, widget: string}, {label: Price, name: price, widget: string}, {label: Description, name: description, widget: string}, {label: Items, name: items, widget: list}]}]}
-      - file: "site/content/values/_index.md"
-        label: "Values Page"
-        name: "values"
-        fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Image, name: image, widget: image}
-          - label: Values
-            name: values
-            widget: list
-            fields:
-              - {label: Heading, name: heading, widget: string}
-              - {label: Text, name: text, widget: text}
-              - {label: Image, name: imageUrl, widget: image}
-  - name: "site_settings"
-    label: "Site Settings"
-    files:
-      - file: "site/data/footer.json"
-        label: Footer
-        name: footer
-        fields:
-          - {label: Title, name: title, widget: string}
-          - {label: Blurb, name: blurb, widget: text}
-      - file: "site/hugo.toml"
-        label: Hugo Config
-        name: config
-        editor:
-          preview: false
-        fields:
-          - {label: Site Title for Browser Tab, name: title, widget: string}
-          - label: Params
-            name: params
-            widget: object
-            fields:
-              - label: Open Graph Image
-                name: images
-                widget: list
-                field: { label: Image, name: image, widget: image }
+          - {label: "Title", name: "title", widget: "string"}
+          - {label: "Body", name: "body", widget: "markdown"}
