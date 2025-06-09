@@ -1,0 +1,107 @@
+{{ define "main" }}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Browse All Items</h1>
+        <p class="text-lg text-gray-700">
+            Explore our complete catalog of digital items across all collections.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Facets Sidebar -->
+        <aside class="lg:col-span-1">
+            <div class="bg-white rounded-lg shadow p-6 sticky top-4">
+                {{ partial "facets.html" . }}
+            </div>
+        </aside>
+
+        <!-- Items Grid -->
+        <div class="lg:col-span-3">
+            <div class="mb-6 flex items-center justify-between">
+                <p class="text-gray-600">
+                    Showing {{ len .Pages }} items
+                </p>
+
+                <div class="flex items-center space-x-4">
+                    <!-- View Toggle -->
+                    <div class="flex space-x-1" x-data="{ view: 'grid' }">
+                        <button
+                                @click="view = 'grid'"
+                                :class="{ 'bg-gray-200': view === 'grid' }"
+                                class="p-2 rounded hover:bg-gray-100"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                            </svg>
+                        </button>
+                        <button
+                                @click="view = 'list'"
+                                :class="{ 'bg-gray-200': view === 'list' }"
+                                class="p-2 rounded hover:bg-gray-100"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Sort -->
+                    <select class="border rounded px-3 py-2 text-sm">
+                        <option>Sort by: Relevance</option>
+                        <option>Sort by: Title (A-Z)</option>
+                        <option>Sort by: Title (Z-A)</option>
+                        <option>Sort by: Date (Newest)</option>
+                        <option>Sort by: Date (Oldest)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {{ range .Pages }}
+                <div class="bg-white rounded-lg shadow hover:shadow-md transition">
+                    <a href="{{ .Permalink }}" class="block">
+                        {{ if .Params.access_files.thumbnail }}
+                        <img
+                                src="{{ .Params.access_files.thumbnail }}"
+                                alt="{{ .Title }}"
+                                class="w-full h-48 object-cover rounded-t-lg"
+                                loading="lazy"
+                        >
+                        {{ else }}
+                        <div class="w-full h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
+                                    <span class="text-4xl">
+                                        {{ if eq .Params.item_type "document" }}📄
+                                        {{ else if eq .Params.item_type "audio" }}🎵
+                                        {{ else if eq .Params.item_type "video" }}🎬
+                                        {{ else if eq .Params.item_type "3d" }}🎲
+                                        {{ else }}📷{{ end }}
+                                    </span>
+                        </div>
+                        {{ end }}
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2">
+                                {{ .Title }}
+                            </h3>
+
+                            {{ if .Params.metadata.creator }}
+                            <p class="text-sm text-gray-600 mb-2">
+                                {{ range first 2 .Params.metadata.creator }}{{ . }}{{ end }}
+                            </p>
+                            {{ end }}
+
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <span>{{ .Params.item_type | humanize }}</span>
+                                <span>{{ .Params.metadata.date | default .Date.Format "2006" }}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {{ end }}
+            </div>
+
+            <!-- Pagination -->
+            {{ template "_internal/pagination.html" . }}
+        </div>
+    </div>
+</div>
+{{ end }}

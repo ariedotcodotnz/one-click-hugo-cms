@@ -1,0 +1,108 @@
+<div class="facets-container" x-data="{
+    openFacets: ['type', 'collection'],
+    toggleFacet(facet) {
+        const index = this.openFacets.indexOf(facet);
+        if (index > -1) {
+            this.openFacets.splice(index, 1);
+        } else {
+            this.openFacets.push(facet);
+        }
+    }
+}">
+    <h3 class="text-lg font-semibold mb-4">Filter Results</h3>
+
+    <!-- Collection Facet -->
+    <div class="mb-6">
+        <button
+                @click="toggleFacet('collection')"
+                class="flex items-center justify-between w-full text-left font-medium text-gray-900 mb-2"
+        >
+            <span>Collection</span>
+            <svg
+                    class="w-5 h-5 transform transition-transform"
+                    :class="{ 'rotate-180': openFacets.includes('collection') }"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+            >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+        <div x-show="openFacets.includes('collection')" x-transition class="space-y-2">
+            {{ range $name, $taxonomy := .Site.Taxonomies.collections }}
+            <label class="flex items-center">
+                <input type="checkbox" name="collection" value="{{ $name }}" class="mr-2">
+                <span class="text-sm">{{ $name | humanize }} ({{ len $taxonomy }})</span>
+            </label>
+            {{ end }}
+        </div>
+    </div>
+
+    <!-- Type Facet -->
+    <div class="mb-6">
+        <button
+                @click="toggleFacet('type')"
+                class="flex items-center justify-between w-full text-left font-medium text-gray-900 mb-2"
+        >
+            <span>Type</span>
+            <svg
+                    class="w-5 h-5 transform transition-transform"
+                    :class="{ 'rotate-180': openFacets.includes('type') }"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+            >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+        <div x-show="openFacets.includes('type')" x-transition class="space-y-2">
+            {{ range $name, $taxonomy := .Site.Taxonomies.types }}
+            <label class="flex items-center">
+                <input type="checkbox" name="type" value="{{ $name }}" class="mr-2">
+                <span class="text-sm">{{ $name | humanize }} ({{ len $taxonomy }})</span>
+            </label>
+            {{ end }}
+        </div>
+    </div>
+
+    <!-- Subject Facet -->
+    <div class="mb-6">
+        <button
+                @click="toggleFacet('subject')"
+                class="flex items-center justify-between w-full text-left font-medium text-gray-900 mb-2"
+        >
+            <span>Subject</span>
+            <svg
+                    class="w-5 h-5 transform transition-transform"
+                    :class="{ 'rotate-180': openFacets.includes('subject') }"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+            >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+        <div x-show="openFacets.includes('subject')" x-transition class="space-y-2 max-h-48 overflow-y-auto">
+            {{ range $name, $taxonomy := .Site.Taxonomies.subjects }}
+            <label class="flex items-center">
+                <input type="checkbox" name="subject" value="{{ $name }}" class="mr-2">
+                <span class="text-sm">{{ $name | humanize }} ({{ len $taxonomy }})</span>
+            </label>
+            {{ end }}
+        </div>
+    </div>
+
+    <!-- Date Range -->
+    <div class="mb-6">
+        <h4 class="font-medium text-gray-900 mb-2">Date Range</h4>
+        <div class="space-y-2">
+            <input type="number" placeholder="From year" class="w-full px-3 py-2 border rounded text-sm">
+            <input type="number" placeholder="To year" class="w-full px-3 py-2 border rounded text-sm">
+        </div>
+    </div>
+
+    <!-- Apply Filters Button -->
+    <button class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+        Apply Filters
+    </button>
+</div>

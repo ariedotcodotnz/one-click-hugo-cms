@@ -1,0 +1,54 @@
+<header class="bg-white shadow-sm border-b" x-data="{ mobileMenuOpen: false }">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo -->
+            <div class="flex-shrink-0">
+                <a href="/" class="text-2xl font-bold text-gray-900 hover:text-gray-700">
+                    {{ .Site.Title }}
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-8">
+                {{ range .Site.Menus.main }}
+                <a href="{{ .URL }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium {{ if $.IsMenuCurrent "main" . }}text-gray-900 border-b-2 border-blue-500{{ end }}">
+                {{ .Name }}
+                </a>
+                {{ end }}
+            </nav>
+
+            <!-- Search Toggle -->
+            <div class="hidden md:block">
+                <button @click="$dispatch('toggle-search')" class="p-2 text-gray-600 hover:text-gray-900">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-md text-gray-600 hover:text-gray-900">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path x-show="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        <path x-show="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div x-show="mobileMenuOpen" x-transition class="md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                {{ range .Site.Menus.main }}
+                <a href="{{ .URL }}" class="block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 {{ if $.IsMenuCurrent "main" . }}text-gray-900 bg-gray-100{{ end }}">
+                {{ .Name }}
+                </a>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Quick Search Modal -->
+{{ partial "search.html" . }}

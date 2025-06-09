@@ -1,0 +1,31 @@
+{{ $collection := .Get "collection" }}
+{{ $limit := .Get "limit" | default 12 }}
+{{ $layout := .Get "layout" | default "grid" }}
+
+<div class="gallery-shortcode" data-layout="{{ $layout }}">
+    {{ if $collection }}
+    <div class="gallery-grid {{ if eq $layout "masonry" }}masonry{{ else }}grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4{{ end }} gap-4">
+    {{ range first $limit (where $.Site.RegularPages "Params.collection" $collection) }}
+    {{ if .Params.access_files.thumbnail }}
+    <div class="gallery-item">
+        <a href="{{ .Permalink }}" class="block relative group">
+            <img
+                    src="{{ .Params.access_files.thumbnail }}"
+                    alt="{{ .Title }}"
+                    class="w-full h-auto rounded shadow-sm group-hover:shadow-lg transition"
+                    loading="lazy"
+            >
+            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition flex items-center justify-center">
+                                <span class="text-white opacity-0 group-hover:opacity-100 transition">
+                                    {{ .Title | truncate 30 }}
+                                </span>
+            </div>
+        </a>
+    </div>
+    {{ end }}
+    {{ end }}
+</div>
+{{ else }}
+<p class="text-red-600">Please specify a collection parameter</p>
+{{ end }}
+</div>
