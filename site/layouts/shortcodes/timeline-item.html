@@ -1,0 +1,15 @@
+{{ $date := .Get "date" }}
+{{ $title := .Get "title" }}
+
+<div class="timeline-item relative pl-10 pb-8">
+    <div class="absolute left-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+        <div class="w-3 h-3 bg-white rounded-full"></div>
+    </div>
+    <div class="bg-white p-4 rounded-lg shadow">
+        <div class="text-sm text-gray-500 mb-1">{{ $date }}</div>
+        <div class="font-semibold text-gray-900">{{ $title }}</div>
+        {{ if .Inner }}
+        <div class="mt-2 text-gray-700">{{ .Inner }}</div>
+        {{ end }}
+    </div>
+</div>

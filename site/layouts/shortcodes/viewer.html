@@ -1,0 +1,39 @@
+{{ $src := .Get "src" }}
+{{ $type := .Get "type" | default "image" }}
+{{ $caption := .Get "caption" }}
+{{ $height := .Get "height" | default "500px" }}
+
+<figure class="viewer-shortcode my-8">
+    <div class="viewer-wrapper" style="height: {{ $height }};">
+        {{ if eq $type "image" }}
+        <div id="viewer-{{ .Ordinal }}" class="openseadragon-viewer" data-src="{{ $src }}"></div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                OpenSeadragon({
+                    id: 'viewer-{{ .Ordinal }}',
+                    prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/',
+                    tileSources: {
+                        type: 'image',
+                        url: '{{ $src }}'
+                    }
+                });
+            });
+        </script>
+        {{ else if eq $type "video" }}
+        <video controls class="w-full h-full">
+            <source src="{{ $src }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        {{ else if eq $type "audio" }}
+        <audio controls class="w-full">
+            <source src="{{ $src }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        {{ else if eq $type "pdf" }}
+        <iframe src="{{ $src }}" class="w-full h-full border-0"></iframe>
+        {{ end }}
+    </div>
+    {{ if $caption }}
+    <figcaption class="text-sm text-gray-600 mt-2 text-center">{{ $caption }}</figcaption>
+    {{ end }}
+</figure>
